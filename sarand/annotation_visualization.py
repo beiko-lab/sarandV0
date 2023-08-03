@@ -50,6 +50,7 @@ def show_images(image_list, main_title, output, cols=1, title_list=None):
     fig.suptitle(main_title, size=18)
     fig.set_size_inches(np.array(fig.get_size_inches()) * n_images)
     plt.savefig(output)
+    plt.close()
 
 
 def extract_annotation_from_csv(input_csv_file):
@@ -139,6 +140,7 @@ def visualize_annotation(input_csv_file, output, title=""):
         ax.figure.savefig(
             os.path.join(temp_dir, "temp" + str(counter) + ".jpg"), bbox_inches="tight"
         )
+        plt.close()
         img = Image.open(os.path.join(temp_dir, "temp" + str(counter) + ".jpg"))
         image_list.append(img)
     show_images(
