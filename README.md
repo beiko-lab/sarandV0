@@ -43,9 +43,21 @@ conda create -n bandage-0.8.1 -c conda-forge -c bioconda -c defaults -y bandage=
 conda create -n rgi-5.2.0 -c conda-forge -c bioconda -c defaults -y rgi=5.2.0
 ```
 
-4. Activate the environment: `conda activate sarand`
+4. Here you will specify environment variables that are specific to the `sarand` environment; these will be automatically used when the environment is active.
 
-5. Install the sarand package into this environment `pip install .`
+**Configuring conda environments:**
+
+```shell
+conda activate sarand
+conda env config vars set CONDA_PROKKA_NAME=prokka-1.14.6
+conda env config vars set CONDA_BANDAGE_NAME=bandage-0.8.1 
+conda env config vars set CONDA_RGI_NAME=rgi-5.2.0
+
+# Note: Here you can specify an alternate exe (e.g. micromamba, mamba).
+conda env config vars set CONDA_EXE_NAME=conda
+```
+
+5. Install the sarand package into this environment `pip install .` or `python -m pip install .`
 
 ### Testing
 

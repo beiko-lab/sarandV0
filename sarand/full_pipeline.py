@@ -26,7 +26,8 @@ import shutil
 import logging
 from functools import partial
 from multiprocessing.pool import Pool
-
+from sarand.config import AMR_DIR_NAME, AMR_SEQ_DIR, AMR_ALIGN_DIR, AMR_OVERLAP_FILE, SEQ_DIR_NAME, SEQ_NAME_PREFIX, \
+    ANNOTATION_DIR, CONDA_EXE_NAME, CONDA_BANDAGE_NAME
 from sarand.extract_neighborhood import neighborhood_sequence_extraction
 from sarand.annotation_visualization import visualize_annotation
 from sarand.utils import (
@@ -44,15 +45,15 @@ from sarand.utils import (
 )
 
 # globals are discouraged in python quite a bit
-AMR_DIR_NAME = "AMR_info"
-AMR_SEQ_DIR = "sequences"
-AMR_ALIGN_DIR = "alignments"
-AMR_OVERLAP_FILE = "overlaps.txt"
-SUBGRAPH_DIR_NAME = "subgraphs"
-SEQ_DIR_NAME = "sequences_info"
-SEQ_NAME_PREFIX = "ng_sequences_"
-ANNOTATION_DIR = "annotations"
-EVAL_DIR = "evaluation"
+#AMR_DIR_NAME = "AMR_info"
+#AMR_SEQ_DIR = "sequences"
+#AMR_ALIGN_DIR = "alignments"
+#AMR_OVERLAP_FILE = "overlaps.txt"
+#SUBGRAPH_DIR_NAME = "subgraphs"
+#SEQ_DIR_NAME = "sequences_info"
+#SEQ_NAME_PREFIX = "ng_sequences_"
+#ANNOTATION_DIR = "annotations"
+#EVAL_DIR = "evaluation"
 
 
 def write_info_in_annotation_file(
@@ -749,14 +750,8 @@ def are_there_amrs_in_graph(gfa_file, output_dir, bandage_path, threshold, amr_o
     )
     if os.path.isfile(output_name + ".tsv"):
         os.remove(output_name + ".tsv")
-    bandage_command = subprocess.run(
-        [
-            #bandage_path,
-            "conda",
-            "run",
-            "-n",
-	    "bandage-0.8.1",
-	    "Bandage",
+    arg_list = [
+            "Bandage",
             "querypaths",
             gfa_file,
             cat_file,
@@ -769,7 +764,11 @@ def are_there_amrs_in_graph(gfa_file, output_dir, bandage_path, threshold, amr_o
             str((threshold - 1) / 100.0),
             "--minhitcov",
             str((threshold - 1) / 100.0),
-        ],
+            ]
+    if CONDA_BANDAGE_NAME:
+        arg_list = [CONDA_EXE_NAME, 'run', '-n', CONDA_BANDAGE_NAME] + arg_list
+    bandage_command = subprocess.run(
+        arg_list,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         check=True,

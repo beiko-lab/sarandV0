@@ -17,7 +17,7 @@ import collections
 import shutil
 import subprocess
 from pathlib import Path
-
+from sarand.config import CONDA_EXE_NAME, CONDA_RGI_NAME, CONDA_PROKKA_NAME
 
 def extract_name_from_file_name(file_name):
     """ """
@@ -258,6 +258,8 @@ def run_RGI(
     ]
     if include_loose:
         arg_list.append("--include_loose")
+    if CONDA_RGI_NAME:
+        arg_list = [CONDA_EXE_NAME, 'run', '-n', CONDA_RGI_NAME] + arg_list
 
     rgi_command = subprocess.run(arg_list, stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT, check=True)
@@ -326,10 +328,6 @@ def annotate_sequence(
     )
     prefix_name = "neighbourhood_" + seq_description
     arg_list = [
-        "conda",
-        "run",
-        "-n",
-        "prokka-1.14.6",
         "prokka",
         "--metagenome",
         "--outdir",
@@ -340,6 +338,8 @@ def annotate_sequence(
         "--notrna",
         seq_file_name,
     ]
+    if CONDA_PROKKA_NAME:
+        arg_list = [CONDA_EXE_NAME, 'run', '-n', CONDA_PROKKA_NAME] + arg_list
     #cwd = os.getcwd()
     #PROKKA_COMMAND_PREFIX = 'docker run -v '+cwd+':/data staphb/prokka:latest '
     #pre_list = PROKKA_COMMAND_PREFIX.strip().split(" ")

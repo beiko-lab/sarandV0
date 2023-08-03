@@ -27,6 +27,7 @@ import logging
 import multiprocessing
 from csv import DictReader
 
+from sarand.config import CONDA_EXE_NAME, CONDA_BANDAGE_NAME
 from sarand.utils import (
     reverse_sign,
     find_node_name,
@@ -1435,14 +1436,8 @@ def find_amr_related_nodes(
         )
         if os.path.isfile(output_name + ".tsv"):
             os.remove(output_name + ".tsv")
-        bandage_command = subprocess.run(
-            [
-		#bandage_path,
-                "conda",
-                "run",
-                "-n",
-		"bandage-0.8.1",
-		"Bandage",
+        arg_list = [
+                "Bandage",
                 "querypaths",
                 gfa_file,
                 amr_file,
@@ -1455,7 +1450,11 @@ def find_amr_related_nodes(
                 str((threshold - 1) / 100.0),
                 "--minhitcov",
                 str((threshold - 1) / 100.0),
-            ],
+                ]
+        if CONDA_BANDAGE_NAME:
+            arg_list = [CONDA_EXE_NAME, 'run', '-n', CONDA_BANDAGE_NAME] + arg_list
+        bandage_command = subprocess.run(
+            arg_list,
             stdout=subprocess.PIPE,
             check=True,
         )
