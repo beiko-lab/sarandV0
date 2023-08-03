@@ -19,13 +19,29 @@ Sarand requires 4 key dependencies:
 - [BLAST+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
 - [Bandage](https://rrwick.github.io/Bandage/)
 
-These can be installed most easily using bioconda.
+These can be installed using bioconda.
 
 1. Clone and enter the sarand repository: `git clone https://github.com/beiko-lab/sarand; cd sarand`
 
 2. Install conda and configure the bioconda channel (detailed instructions can be found [here](https://bioconda.github.io)).
 
-3. Create the `sarand` conda environment with required dependencies: `conda env create -f conda_env.yaml`
+3. As there are dependency conflicts between the tools used by sarand, you will need to create multiple conda environments.
+
+**Creating environments:**
+
+```shell
+# 1. Create the sarand environment
+conda create -n sarand -c conda-forge -c bioconda -c defaults -y blast=2.14.0 dna_features_viewer=3.1.2 numpy matplotlib-base gfapy=1.2.3 pandas python pillow biopython
+
+# 2. Create the Prokka environment
+conda create -n prokka-1.14.6 -c conda-forge -c bioconda -c defaults -y prokka=1.14.6
+
+# 3. Create the Bandage environment
+conda create -n bandage-0.8.1 -c conda-forge -c bioconda -c defaults -y bandage=0.8.1
+
+# 4. Create the RGI environment
+conda create -n rgi-5.2.0 -c conda-forge -c bioconda -c defaults -y rgi=5.2.0
+```
 
 4. Activate the environment: `conda activate sarand`
 
