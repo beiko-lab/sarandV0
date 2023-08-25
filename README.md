@@ -1,4 +1,7 @@
-# Sarand
+# Sarand Version 0.9
+
+# PLEASE NOTE this branch is no longer in active development. The pre-release Version 1 is accessible at https://github.com/beiko-lab/sarand
+# This repository will become private on or before Septmber 1, 2023.
 
 ![sarand](sarand/docs/sarand.png)
 
